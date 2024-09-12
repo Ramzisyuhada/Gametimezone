@@ -61,10 +61,10 @@ public class Crosshair : MonoBehaviour
             particleSystem.Stop();
             particleSystem.Play();
             GetComponent<AudioSource>().Play();
+            
         }
 
         Peluru.transform.GetChild(index).gameObject.SetActive(false);
-        Debug.Log(index); 
      
         index--;
         if (index < 0)
