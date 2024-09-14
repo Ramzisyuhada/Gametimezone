@@ -6,18 +6,22 @@ using static UnityEngine.GraphicsBuffer;
 
 public class WeaponViewModel 
 {
-    public void Shoot(Ray ray )
-    {
-        GameObject bullet = ObjectPool.instance.GetPooledObject();
-        if (bullet != null)
-        {
-            bullet.transform.position = ray.origin;
-            bullet.transform.rotation = Quaternion.LookRotation(ray.direction);
-            bullet.SetActive(true); 
+    Animator animator;
+    EnemyView enemy;
 
-           
-    
+    public void Shoot(RaycastHit hit )
+    {
+
+        if (hit.transform.CompareTag("Enemy"))
+        {
+            EnemyView enemy = hit.transform.GetComponent<EnemyView>();
+
+            enemy.PlaySoundDamage();
+
+            animator = enemy.GetComponent<Animator>();
+            enemy.enemy.Health -= 20;
+            animator.SetTrigger("Hit");
+            animator.SetInteger("Die", enemy.enemy.Health);
         }
-         
     }
 }

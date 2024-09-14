@@ -14,6 +14,8 @@ public class WeaponView : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private AudioSource SoundWeapon;
 
+    [SerializeField] private AudioSource Reload;
+
     [Header("Instantiance")]
     [SerializeField] private GameObject ins;
 
@@ -43,14 +45,29 @@ public class WeaponView : MonoBehaviour
 
         Crosshair.transform.position = Input.mousePosition;
         if (Input.GetMouseButtonDown(0) && Time.time >= nextFiretime) {
-            SoundWeapon.Play();
             WeaponViewModel weaponViewModel = new WeaponViewModel();
-            weaponViewModel.Shoot(ray);
-            if (weapon.Getammo() > 0)
-            {
-                weapon.Setammo(weapon.Getammo() - 20);
-                ammo.text = weapon.Getammo().ToString();
+
+
+            if (Physics.Raycast(ray,out RaycastHit hit)) {
+                if (weapon.Getammo() > 0)
+                {
+                    weaponViewModel.Shoot(hit);
+
+                    SoundWeapon.Play();
+
+                    weapon.Setammo(weapon.Getammo() - 20);
+                    ammo.text = weapon.Getammo().ToString();
+                }
+                if (weapon.Getammo() <= 0)
+                {
+                    Reload.Play();
+                    weapon.Setammo(100);
+
+
+                }
             }
+         
+
             nextFiretime = Time.time + weapon.Getrateorfire();
         }
     }

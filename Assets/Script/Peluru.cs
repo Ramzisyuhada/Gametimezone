@@ -4,12 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class Peuru : MonoBehaviour
+public class peluru : MonoBehaviour
 {
     Rigidbody rb;
     public Transform tip;
+    int i = 0;
+    public GameObject particle;
 
-    public ParticleSystem particle;
+    private Vector3 _lastpoint;
     void Start()
         
     {
@@ -17,7 +19,7 @@ public class Peuru : MonoBehaviour
         /*        rb.velocity = transform.forward * 2200f;
         */
 
-
+        _lastpoint = new Vector3(0f, 0.629999995f, -0.503000021f);
     }
 
     void Update()
@@ -33,11 +35,19 @@ public class Peuru : MonoBehaviour
 
     private void CheckCollision()
     {
+        GameObject pcr;
         if (Physics.Linecast(Vector3.zero, tip.position, out RaycastHit hitInfo))
         {
-            Debug.Log(hitInfo.transform.gameObject.name);
+            if (hitInfo.transform.gameObject.CompareTag("Target"))
+            {
+                Destroy(hitInfo.transform.gameObject);
+                pcr = Instantiate(particle, hitInfo.transform.position, Quaternion.identity);
+                pcr.GetComponent<ParticleSystem>().Play();
+                gameObject.SetActive(false);
 
-            if (hitInfo.transform.gameObject.CompareTag("Target")) Debug.Log("Nambah Score");
+            }
         }
     }
+
 }
+
