@@ -6,30 +6,26 @@ using UnityEngine.UI;
 
 public class PlayerView : MonoBehaviour
 {
-    [SerializeField] private Image DamageEffect;
+    [SerializeField] public Image DamageEffect;
 
-    public Player player;
+    public Player player = new Player(100);
 
-    
+    public static Image effect ;
 
-    void Start()
+
+    private void Awake()
     {
-        player= new Player(100);
+        effect = DamageEffect;
     }
-
     void Update()
     {
-        if (DamageEffect.color.a != 0 )
+        
+        if (effect.color.a != 0 )
         {
-            DamageEffect.color = new Color(DamageEffect.color.r, DamageEffect.color.g, DamageEffect.color.b, Mathf.MoveTowards(DamageEffect.color.a,0f,0.5f * Time.deltaTime));
+            effect.color = new Color(effect.color.r, effect.color.g, effect.color.b, Mathf.MoveTowards(effect.color.a,0f,0.5f * Time.deltaTime));
 
         }
-        if (player.Health1 == 0)
-        {
-            Debug.Log(player.Health1);
 
-
-        }
     }
 
 
@@ -41,10 +37,9 @@ public class PlayerView : MonoBehaviour
 
     public void ShowDamage()
     {
-        
-           DamageEffect.color = new Color(DamageEffect.color.r, DamageEffect.color.g, DamageEffect.color.b, 0.3f);
-         
+        effect.color = new Color(effect.color.r, effect.color.g, effect.color.b, 0.3f);
+
     }
 
-    
+
 }

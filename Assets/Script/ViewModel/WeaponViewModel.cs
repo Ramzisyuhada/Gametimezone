@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ public class WeaponViewModel
 {
     Animator animator;
     EnemyView enemy;
-
     public void Shoot(RaycastHit hit )
     {
 
@@ -17,11 +17,14 @@ public class WeaponViewModel
             EnemyView enemy = hit.transform.GetComponent<EnemyView>();
 
             enemy.PlaySoundDamage();
-
+           
             animator = enemy.GetComponent<Animator>();
             enemy.enemy.Health -= 20;
+
             animator.SetTrigger("Hit");
             animator.SetInteger("Die", enemy.enemy.Health);
         }
     }
+
+    
 }

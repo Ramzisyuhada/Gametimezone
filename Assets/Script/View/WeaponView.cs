@@ -20,6 +20,9 @@ public class WeaponView : MonoBehaviour
     [SerializeField] private GameObject ins;
 
 
+    [Header("Particle")]
+    [SerializeField] private GameObject particle;
+    GameObject pr;
 
 
 
@@ -27,7 +30,6 @@ public class WeaponView : MonoBehaviour
     private Camera camera;
     private Ray ray;
     private Weapon weapon;
-
     private float nextFiretime = 0f;
    
     void Start()
@@ -42,21 +44,27 @@ public class WeaponView : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
 
         ray = camera.ScreenPointToRay(mousePosition);
-
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
         Crosshair.transform.position = Input.mousePosition;
         if (Input.GetMouseButtonDown(0) && Time.time >= nextFiretime) {
             WeaponViewModel weaponViewModel = new WeaponViewModel();
 
-
             if (Physics.Raycast(ray,out RaycastHit hit)) {
                 if (weapon.Getammo() > 0)
                 {
-                    weaponViewModel.Shoot(hit);
+                    
 
+                    weaponViewModel.Shoot(hit);
+                    
                     SoundWeapon.Play();
+                     pr = Instantiate(particle, hit.point, Quaternion.identity);
+                    Debug.Log(hit.transform.position.y);
+                    pr.GetComponent<ParticleSystem>().Play();
 
                     weapon.Setammo(weapon.Getammo() - 20);
                     ammo.text = weapon.Getammo().ToString();
+               
+
                 }
                 if (weapon.Getammo() <= 0)
                 {
